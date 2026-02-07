@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserByEmail, initializeDefaultUsers } from '@/app/lib/db';
+import { getUserByEmail, initializeDefaultUsers, updateUserPassword } from '@/app/lib/db';
+import { isBcryptHash, signSession, verifyPassword, hashPassword } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
     try {
@@ -27,12 +28,22 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Validate password (in production, use bcrypt or similar)
-        if (user.role !== 'admin' || user.password !== password) {
+        // Validate password
+        const passwordMatches = isBcryptHash(user.password)
+          ? await verifyPassword(password, user.password)
+          : user.password === password;
+
+        if (user.role !== 'admin' || !passwordMatches) {
             return NextResponse.json(
                 { message: 'Invalid email or password' },
                 { status: 401 }
             );
+        }
+
+        // Upgrade legacy plain-text passwords to hashed on successful login
+        if (!isBcryptHash(user.password)) {
+            const newHash = await hashPassword(password);
+            await updateUserPassword(user.email, newHash);
         }
 
         // Create session (in production, use JWT or sessions)
@@ -51,10 +62,13 @@ export async function POST(request: NextRequest) {
         );
 
         // Set a simple session cookie (in production, use secure session management)
-        response.cookies.set('nafs_session', JSON.stringify({ userId: user.id, role: 'admin' }), {
+        const token = await signSession({ sub: user.id, role: 'admin' });
+        response.cookies.set('nafs_session', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 24 * 60 * 60, // 24 hours
+            sameSite: 'lax',
+            path: '/',
         });
 
         return response;

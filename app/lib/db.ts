@@ -1,118 +1,281 @@
 /**
- * Simple file-based database for MVP
- * In production, use PostgreSQL, MongoDB, etc.
+ * Postgres database access (Neon)
  */
 
-import fs from 'fs/promises';
-import path from 'path';
+import { neon } from '@neondatabase/serverless';
+import { hashPassword } from '@/lib/auth';
 
-// Vercel/serverless filesystem is read-only except /tmp
-const baseDir = process.env.VERCEL ? '/tmp' : process.cwd();
-const dbDir = path.join(baseDir, '.nafs-db');
-const registrationsFile = path.join(dbDir, 'registrations.json');
-const usersFile = path.join(dbDir, 'users.json');
+const connectionString =
+  process.env.DATABASE_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL_UNPOOLED ||
+  process.env.POSTGRES_URL_NON_POOLING;
 
-// Ensure db directory exists
-async function ensureDbDir() {
-    try {
-        await fs.mkdir(dbDir, { recursive: true });
-    } catch (error) {
-        console.error('Error creating db directory:', error);
-    }
+if (!connectionString) {
+  throw new Error(
+    'Database connection string not configured. Set DATABASE_URL (or POSTGRES_URL).'
+  );
 }
 
-// Helper to read JSON file with default fallback
-async function readJsonFile(filePath: string, defaultValue: any = []) {
-    try {
-        const data = await fs.readFile(filePath, 'utf-8');
-        return JSON.parse(data);
-    } catch (error) {
-        return defaultValue;
-    }
+const sql = neon(connectionString);
+
+export interface RegistrationRecord {
+  id: string;
+  category: string;
+  reference: string;
+  amount: number;
+  status: string;
+  paystackReference?: string | null;
+  paystackAccessCode?: string | null;
+  data?: Record<string, any> | null;
+  createdAt?: string;
+  updatedAt?: string;
+  verifiedAt?: string | null;
+  failedAt?: string | null;
 }
 
-// Helper to write JSON file
-async function writeJsonFile(filePath: string, data: any) {
-    await ensureDbDir();
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+export interface UserRecord {
+  id: string;
+  email: string;
+  password: string;
+  role: string;
+  schoolName?: string | null;
+  registrationId?: string | null;
+  name?: string | null;
+  createdAt?: string;
 }
 
 // Registration storage
-export async function saveRegistration(registration: any) {
-    const registrations = await readJsonFile(registrationsFile, []);
-    registrations.push({
-        ...registration,
-        createdAt: new Date().toISOString(),
-    });
-    await writeJsonFile(registrationsFile, registrations);
-    return registration;
+export async function saveRegistration(registration: RegistrationRecord) {
+  const rows = await sql`
+    INSERT INTO registrations (
+      id,
+      category,
+      reference,
+      amount,
+      status,
+      paystack_reference,
+      paystack_access_code,
+      data
+    ) VALUES (
+      ${registration.id},
+      ${registration.category},
+      ${registration.reference},
+      ${registration.amount},
+      ${registration.status},
+      ${registration.paystackReference ?? null},
+      ${registration.paystackAccessCode ?? null},
+      ${registration.data ?? null}
+    )
+    RETURNING
+      id,
+      category,
+      reference,
+      amount,
+      status,
+      paystack_reference as "paystackReference",
+      paystack_access_code as "paystackAccessCode",
+      data,
+      created_at as "createdAt",
+      updated_at as "updatedAt",
+      verified_at as "verifiedAt",
+      failed_at as "failedAt";
+  `;
+
+  return rows[0];
 }
 
 export async function getRegistration(id: string) {
-    const registrations = await readJsonFile(registrationsFile, []);
-    return registrations.find((r: any) => r.id === id);
+  const rows = await sql`
+    SELECT
+      id,
+      category,
+      reference,
+      amount,
+      status,
+      paystack_reference as "paystackReference",
+      paystack_access_code as "paystackAccessCode",
+      data,
+      created_at as "createdAt",
+      updated_at as "updatedAt",
+      verified_at as "verifiedAt",
+      failed_at as "failedAt"
+    FROM registrations
+    WHERE id = ${id}
+    LIMIT 1;
+  `;
+
+  return rows[0] ?? null;
 }
 
-export async function updateRegistration(id: string, updates: any) {
-    const registrations = await readJsonFile(registrationsFile, []);
-    const index = registrations.findIndex((r: any) => r.id === id);
-    if (index !== -1) {
-        registrations[index] = { ...registrations[index], ...updates };
-        await writeJsonFile(registrationsFile, registrations);
-        return registrations[index];
-    }
-    return null;
+export async function updateRegistration(id: string, updates: Partial<RegistrationRecord>) {
+  const status = updates.status ?? null;
+  const verifiedAt = updates.verifiedAt ?? null;
+  const failedAt = updates.failedAt ?? null;
+
+  const rows = await sql`
+    UPDATE registrations
+    SET
+      status = COALESCE(${status}, status),
+      verified_at = COALESCE(${verifiedAt}, verified_at),
+      failed_at = COALESCE(${failedAt}, failed_at),
+      updated_at = NOW()
+    WHERE id = ${id}
+    RETURNING
+      id,
+      category,
+      reference,
+      amount,
+      status,
+      paystack_reference as "paystackReference",
+      paystack_access_code as "paystackAccessCode",
+      data,
+      created_at as "createdAt",
+      updated_at as "updatedAt",
+      verified_at as "verifiedAt",
+      failed_at as "failedAt";
+  `;
+
+  return rows[0] ?? null;
 }
 
 export async function getAllRegistrations() {
-    return readJsonFile(registrationsFile, []);
+  return sql`
+    SELECT
+      id,
+      category,
+      reference,
+      amount,
+      status,
+      paystack_reference as "paystackReference",
+      paystack_access_code as "paystackAccessCode",
+      data,
+      created_at as "createdAt",
+      updated_at as "updatedAt",
+      verified_at as "verifiedAt",
+      failed_at as "failedAt"
+    FROM registrations
+    ORDER BY created_at DESC;
+  `;
 }
 
 // User storage (for admin/school login)
-export async function saveUser(user: any) {
-    const users = await readJsonFile(usersFile, []);
-    users.push({
-        ...user,
-        createdAt: new Date().toISOString(),
-    });
-    await writeJsonFile(usersFile, users);
-    return user;
+export async function saveUser(user: UserRecord) {
+  const rows = await sql`
+    INSERT INTO users (
+      id,
+      email,
+      password,
+      role,
+      school_name,
+      registration_id,
+      name
+    ) VALUES (
+      ${user.id},
+      ${user.email},
+      ${user.password},
+      ${user.role},
+      ${user.schoolName ?? null},
+      ${user.registrationId ?? null},
+      ${user.name ?? null}
+    )
+    RETURNING
+      id,
+      email,
+      password,
+      role,
+      school_name as "schoolName",
+      registration_id as "registrationId",
+      name,
+      created_at as "createdAt";
+  `;
+
+  return rows[0];
+}
+
+export async function updateUserPassword(email: string, password: string) {
+  const rows = await sql`
+    UPDATE users
+    SET password = ${password}
+    WHERE email = ${email}
+    RETURNING
+      id,
+      email,
+      password,
+      role,
+      school_name as "schoolName",
+      registration_id as "registrationId",
+      name,
+      created_at as "createdAt";
+  `;
+
+  return rows[0] ?? null;
 }
 
 export async function getUserByEmail(email: string) {
-    const users = await readJsonFile(usersFile, []);
-    return users.find((u: any) => u.email === email);
+  const rows = await sql`
+    SELECT
+      id,
+      email,
+      password,
+      role,
+      school_name as "schoolName",
+      registration_id as "registrationId",
+      name,
+      created_at as "createdAt"
+    FROM users
+    WHERE email = ${email}
+    LIMIT 1;
+  `;
+
+  return rows[0] ?? null;
 }
 
 export async function getAllUsers() {
-    return readJsonFile(usersFile, []);
+  return sql`
+    SELECT
+      id,
+      email,
+      password,
+      role,
+      school_name as "schoolName",
+      registration_id as "registrationId",
+      name,
+      created_at as "createdAt"
+    FROM users
+    ORDER BY created_at DESC;
+  `;
 }
 
 // Create default users for demo
 export async function initializeDefaultUsers() {
-    const users = await readJsonFile(usersFile, []);
+  const rows = await sql`
+    SELECT email
+    FROM users
+    WHERE email IN ('admin@educonf.com', 'school@example.com');
+  `;
 
-    // Check if demo users already exist
-    const adminExists = users.some((u: any) => u.email === 'admin@educonf.com');
-    const schoolExists = users.some((u: any) => u.email === 'school@example.com');
+  const emails = new Set(rows.map((row: any) => row.email));
 
-    if (!adminExists) {
-        await saveUser({
-            id: 'admin-1',
-            email: 'admin@educonf.com',
-            password: 'admin123', // In production, hash this!
-            role: 'admin',
-            name: 'Admin User',
-        });
-    }
+  if (!emails.has('admin@educonf.com')) {
+    const password = await hashPassword('admin123');
+    await saveUser({
+      id: 'admin-1',
+      email: 'admin@educonf.com',
+      password,
+      role: 'admin',
+      name: 'Admin User',
+    });
+  }
 
-    if (!schoolExists) {
-        await saveUser({
-            id: 'school-1',
-            email: 'school@example.com',
-            password: 'school123', // In production, hash this!
-            role: 'school',
-            schoolName: 'Demo High School',
-        });
-    }
+  if (!emails.has('school@example.com')) {
+    const password = await hashPassword('school123');
+    await saveUser({
+      id: 'school-1',
+      email: 'school@example.com',
+      password,
+      role: 'school',
+      schoolName: 'Demo High School',
+    });
+  }
 }

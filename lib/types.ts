@@ -73,14 +73,14 @@ export interface SchoolUser {
 
 // NAFS Pricing Structure for Nigeria (in Naira)
 export const PRICING = {
-  basePrice: 6000, // ₦6,000 (programme + book)
-  book: 3000, // ₦3,000
-  programme: 3000, // ₦3,000 base
+  basePrice: 5000, // ₦5,000 (programme + book)
+  book: 2500, // ₦2,500
+  programme: 2500, // ₦2,500 base
   tiers: [
-    { minStudents: 100, programmeCost: 2100, discountPercentage: 30 }, // 30% discount
-    { minStudents: 50, programmeCost: 2400, discountPercentage: 20 }, // 20% discount
-    { minStudents: 20, programmeCost: 2700, discountPercentage: 10 }, // 10% discount
-    { minStudents: 1, programmeCost: 3000, discountPercentage: 0 }, // No discount
+    { minStudents: 100, programmeCost: 1750, discountPercentage: 30 }, // 30% discount
+    { minStudents: 50, programmeCost: 2000, discountPercentage: 20 }, // 20% discount
+    { minStudents: 20, programmeCost: 2250, discountPercentage: 10 }, // 10% discount
+    { minStudents: 1, programmeCost: 2500, discountPercentage: 0 }, // No discount
   ],
 };
 
@@ -124,33 +124,33 @@ export const calculateSchoolPrice = (studentCount: number) => {
 export const getPricingTiers = (): PricingTier[] => [
   {
     students: 100,
-    programme: 2100,
-    book: 3000,
-    total: 5100,
+    programme: 1750,
+    book: 2500,
+    total: 4250,
     discount: 30,
     description: '100+ students',
   },
   {
     students: 50,
-    programme: 2400,
-    book: 3000,
-    total: 5400,
+    programme: 2000,
+    book: 2500,
+    total: 4500,
     discount: 20,
     description: '50–99 students',
   },
   {
     students: 20,
-    programme: 2700,
-    book: 3000,
-    total: 5700,
+    programme: 2250,
+    book: 2500,
+    total: 4750,
     discount: 10,
     description: '20–49 students',
   },
   {
     students: 1,
-    programme: 3000,
-    book: 3000,
-    total: 6000,
+    programme: 2500,
+    book: 2500,
+    total: 5000,
     discount: 0,
     description: '1–19 students',
   },

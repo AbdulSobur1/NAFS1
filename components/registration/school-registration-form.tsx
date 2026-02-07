@@ -186,7 +186,7 @@ export default function SchoolRegistrationForm({ onBack }: SchoolRegistrationFor
                         <Input
                           id="contactPhone"
                           type="tel"
-                          placeholder="(555) 123-4567"
+                          placeholder="(234) 123-4567-89"
                           {...register('contactPhone')}
                           className={errors.contactPhone ? 'border-red-500' : ''}
                         />
@@ -261,43 +261,23 @@ export default function SchoolRegistrationForm({ onBack }: SchoolRegistrationFor
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Number of Students</span>
-                    <span className="font-semibold">{totalStudents}</span>
-                  </div>
-                  <div className="border-t border-border my-3" />
-                  <div className="flex justify-between text-sm">
-                    <span>Programme (per student)</span>
-                    <span className="font-semibold">₦{pricing.programme.toLocaleString()}</span>
+                    <span>Registration Type</span>
+                    <span className="font-semibold">School (Group)</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Books & Materials (per student)</span>
-                    <span className="font-semibold">₦{pricing.book.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Per Student Total</span>
+                    <span>Price</span>
                     <span className="font-semibold">₦{pricing.perStudent.toLocaleString()}</span>
                   </div>
                 </div>
 
                 <div className="border-t border-border pt-4">
                   <div className="flex justify-between items-center">
-                    <span className="font-semibold">Total Cost</span>
+                    <span className="font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary">
                       ₦{pricing.total.toLocaleString()}
                     </span>
                   </div>
                 </div>
-
-                {discountPercentage > 0 && (
-                  <div className="bg-accent/10 border border-accent/30 rounded-lg p-3">
-                    <p className="text-sm font-semibold text-accent mb-1">
-                      🎉 {discountPercentage}% Group Discount Applied!
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      You're saving ₦{((PRICING.book + PRICING.programme) * totalStudents - pricing.total).toLocaleString()} with group registration
-                    </p>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </div>
