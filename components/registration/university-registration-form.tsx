@@ -71,7 +71,8 @@ export default function UniversityRegistrationForm({ onBack }: UniversityRegistr
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create payment');
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to create payment');
       }
 
       const { authorizationUrl, registrationId, paystackReference } = await response.json();
