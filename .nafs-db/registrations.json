@@ -1,0 +1,18 @@
+[
+  {
+    "id": "REG-1770428048910-3g3saop6d",
+    "category": "general",
+    "reference": "NAFS_GENERAL_1770428048910_DK1F8R",
+    "amount": 6000,
+    "status": "pending",
+    "paystackReference": "NAFS_GENERAL_1770428048910_DK1F8R",
+    "paystackAccessCode": "9hput6g2dje6yl0",
+    "data": {
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "test@example.com",
+      "basePrice": 6000
+    },
+    "createdAt": "2026-02-07T01:34:11.086Z"
+  }
+]
