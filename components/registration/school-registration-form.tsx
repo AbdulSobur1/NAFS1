@@ -72,6 +72,7 @@ export default function SchoolRegistrationForm({ onBack }: SchoolRegistrationFor
           schoolName: data.schoolName,
           contactName: data.contactName,
           contactEmail: data.contactEmail,
+          email: data.contactEmail,
           contactPhone: data.contactPhone,
           studentNames: data.studentNames.map(s => s.name),
           totalStudents,

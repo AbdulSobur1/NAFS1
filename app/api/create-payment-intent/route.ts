@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       studentNames,
       firstName,
       lastName,
-      email,
+      email: rawEmail,
       universityName,
       degreeLevel,
       phone,
@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
       discountPercentage,
       amount,
     } = body;
+
+    const email = rawEmail ?? contactEmail;
 
     // Validate required fields
     if (!category || !email || !amount) {

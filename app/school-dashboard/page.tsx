@@ -169,7 +169,7 @@ export default function SchoolDashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">${mockSchoolData.totalAmount}</div>
+              <div className="text-3xl font-bold">₦{mockSchoolData.totalAmount.toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">payment completed</p>
             </CardContent>
           </Card>
@@ -208,7 +208,7 @@ export default function SchoolDashboardPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Base price per student</span>
-                  <span>${mockSchoolData.basePrice}</span>
+                  <span>₦{mockSchoolData.basePrice.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Number of students</span>
@@ -216,21 +216,21 @@ export default function SchoolDashboardPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
-                  <span>${(mockSchoolData.basePrice * mockSchoolData.totalStudents).toFixed(2)}</span>
+                  <span>₦{(mockSchoolData.basePrice * mockSchoolData.totalStudents).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm text-green-600 dark:text-green-400 font-semibold">
                   <span>Group discount ({mockSchoolData.discountPercentage}%)</span>
                   <span>
-                    -$
+                    -₦
                     {(
                       (mockSchoolData.basePrice * mockSchoolData.totalStudents * mockSchoolData.discountPercentage) /
                       100
-                    ).toFixed(2)}
+                    ).toLocaleString()}
                   </span>
                 </div>
                 <div className="border-t border-border pt-2 flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${mockSchoolData.totalAmount.toFixed(2)}</span>
+                  <span>₦{mockSchoolData.totalAmount.toLocaleString()}</span>
                 </div>
               </div>
             </div>

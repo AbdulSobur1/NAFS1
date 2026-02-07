@@ -66,7 +66,7 @@ export default function UniversityRegistrationForm({ onBack }: UniversityRegistr
           degreeLevel: data.degreeLevel,
           basePrice: PRICING.basePrice,
           discountPercentage: 0,
-          amount: Math.round(PRICING.basePrice * 100),
+          amount: Math.round(PRICING.basePrice),
         }),
       });
 
@@ -226,7 +226,7 @@ export default function UniversityRegistrationForm({ onBack }: UniversityRegistr
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Price</span>
-                    <span>${PRICING.basePrice}</span>
+                    <span>₦{PRICING.basePrice.toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -234,7 +234,7 @@ export default function UniversityRegistrationForm({ onBack }: UniversityRegistr
                   <div className="flex justify-between items-center">
                     <span className="font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary">
-                      ${PRICING.basePrice.toFixed(2)}
+                      ₦{PRICING.basePrice.toLocaleString()}
                     </span>
                   </div>
                 </div>

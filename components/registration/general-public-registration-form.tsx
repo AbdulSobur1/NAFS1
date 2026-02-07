@@ -59,7 +59,7 @@ export default function GeneralPublicRegistrationForm({
           profession: data.profession,
           basePrice: basePrice,
           discountPercentage: 0,
-          amount: Math.round(basePrice * 100),
+          amount: Math.round(basePrice),
         }),
       });
 
@@ -202,7 +202,7 @@ export default function GeneralPublicRegistrationForm({
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Price</span>
-                    <span>${basePrice}</span>
+                    <span>₦{basePrice.toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -210,7 +210,7 @@ export default function GeneralPublicRegistrationForm({
                   <div className="flex justify-between items-center">
                     <span className="font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary">
-                      ${basePrice.toFixed(2)}
+                      ₦{basePrice.toLocaleString()}
                     </span>
                   </div>
                 </div>

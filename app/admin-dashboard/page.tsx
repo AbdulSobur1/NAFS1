@@ -74,7 +74,7 @@ const mockRegistrations = {
       universityName: 'Harvard University',
       email: 'emily@harvard.edu',
       degreeLevel: 'Master\'s',
-      price: 150,
+      price: 6000,
       paymentStatus: 'completed',
       date: '2025-01-20',
     },
@@ -84,7 +84,7 @@ const mockRegistrations = {
       universityName: 'Stanford University',
       email: 'james@stanford.edu',
       degreeLevel: 'PhD',
-      price: 150,
+      price: 6000,
       paymentStatus: 'completed',
       date: '2025-01-21',
     },
@@ -95,7 +95,7 @@ const mockRegistrations = {
       name: 'Patricia Martin',
       email: 'patricia@example.com',
       profession: 'Principal',
-      price: 150,
+      price: 6000,
       paymentStatus: 'completed',
       date: '2025-01-22',
     },
@@ -240,8 +240,8 @@ export default function AdminDashboardPage() {
                 Total Revenue
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">${stats.totalRev.toFixed(0)}</div>
+          <CardContent>
+              <div className="text-2xl font-bold">₦{stats.totalRev.toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">all payments completed</p>
             </CardContent>
           </Card>
@@ -252,9 +252,9 @@ export default function AdminDashboardPage() {
                 Avg per School
               </CardTitle>
             </CardHeader>
-            <CardContent>
+          <CardContent>
               <div className="text-2xl font-bold">
-                ${stats.schools > 0 ? (mockRegistrations.school.reduce((sum, s) => sum + s.price, 0) / stats.schools).toFixed(0) : 0}
+                ₦{stats.schools > 0 ? Math.round(mockRegistrations.school.reduce((sum, s) => sum + s.price, 0) / stats.schools).toLocaleString() : '0'}
               </div>
               <p className="text-xs text-muted-foreground">average transaction</p>
             </CardContent>
@@ -360,7 +360,7 @@ export default function AdminDashboardPage() {
                                 </TableCell>
                                 <TableCell>{rr.schoolName || rr.name}</TableCell>
                                 <TableCell className="text-sm">{rr.email || rr.contactEmail}</TableCell>
-                                <TableCell className="text-right font-semibold">₦{rr.price}</TableCell>
+                                <TableCell className="text-right font-semibold">₦{rr.price.toLocaleString()}</TableCell>
                                 <TableCell>
                                   <Badge className="bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200">
                                     {rr.paymentStatus}
@@ -408,7 +408,7 @@ export default function AdminDashboardPage() {
                             </div>
                           </TableCell>
                           <TableCell className="font-semibold">{school.students}</TableCell>
-                          <TableCell className="font-bold">${school.price}</TableCell>
+                          <TableCell className="font-bold">₦{school.price.toLocaleString()}</TableCell>
                           <TableCell>
                             <Badge className="bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200">
                               {school.paymentStatus}

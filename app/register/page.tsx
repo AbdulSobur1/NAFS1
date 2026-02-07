@@ -135,7 +135,7 @@ export default function RegisterPage() {
               <span className="font-semibold">Schools:</span> Individual high school students cannot register directly. Only authorized school administrators can register students.
             </p>
             <p>
-              <span className="font-semibold">Payment:</span> Registration is only complete after successful payment. All payments are processed securely through Stripe.
+              <span className="font-semibold">Payment:</span> Registration is only complete after successful payment. All payments are processed securely through Paystack.
             </p>
             <p>
               <span className="font-semibold">Discounts:</span> School group discounts are automatically calculated based on the number of students. No promo codes needed.
