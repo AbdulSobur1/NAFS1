@@ -99,9 +99,12 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error creating payment intent:', error);
-    return NextResponse.json(
-      { error: 'Failed to create payment intent' },
-      { status: 500 }
-    );
+    const message =
+      process.env.NODE_ENV === 'production'
+        ? 'Failed to create payment intent'
+        : error instanceof Error
+          ? error.message
+          : 'Failed to create payment intent';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -49,7 +49,10 @@ export async function initializePaystackPayment(
     });
 
     if (!response.ok) {
-      throw new Error(`Paystack API error: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(
+        `Paystack API error: ${response.status} ${response.statusText} - ${errorText}`
+      );
     }
 
     const data: PaystackPaymentResponse = await response.json();
@@ -81,7 +84,10 @@ export async function verifyPaystackPayment(reference: string): Promise<boolean>
     );
 
     if (!response.ok) {
-      throw new Error(`Paystack API error: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(
+        `Paystack API error: ${response.status} ${response.statusText} - ${errorText}`
+      );
     }
 
     interface VerifyResponse {
