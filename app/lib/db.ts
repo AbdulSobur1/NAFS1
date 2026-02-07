@@ -6,7 +6,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const dbDir = path.join(process.cwd(), '.nafs-db');
+// Vercel/serverless filesystem is read-only except /tmp
+const baseDir = process.env.VERCEL ? '/tmp' : process.cwd();
+const dbDir = path.join(baseDir, '.nafs-db');
 const registrationsFile = path.join(dbDir, 'registrations.json');
 const usersFile = path.join(dbDir, 'users.json');
 
