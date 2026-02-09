@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserByEmail, initializeDefaultUsers, updateUserPassword } from '@/app/lib/db';
+import { getUserByEmail, updateUserPassword } from '@/app/lib/db';
 import { isBcryptHash, signSession, verifyPassword, hashPassword } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
     try {
-        // Initialize default users on first request
-        await initializeDefaultUsers();
-
         const body = await request.json();
         const { email, password } = body;
 

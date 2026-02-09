@@ -294,33 +294,6 @@ export async function getAllUsers() {
 
 // Create default users for demo
 export async function initializeDefaultUsers() {
-  const rows = await sql`
-    SELECT email
-    FROM users
-    WHERE email IN ('admin@educonf.com', 'school@example.com');
-  `;
-
-  const emails = new Set(rows.map((row: any) => row.email));
-
-  if (!emails.has('admin@educonf.com')) {
-    const password = await hashPassword('admin123');
-    await saveUser({
-      id: 'admin-1',
-      email: 'admin@educonf.com',
-      password,
-      role: 'admin',
-      name: 'Admin User',
-    });
-  }
-
-  if (!emails.has('school@example.com')) {
-    const password = await hashPassword('school123');
-    await saveUser({
-      id: 'school-1',
-      email: 'school@example.com',
-      password,
-      role: 'school',
-      schoolName: 'Demo High School',
-    });
-  }
+  // Demo users removed — keep empty to avoid auto-creating accounts.
+  return;
 }
