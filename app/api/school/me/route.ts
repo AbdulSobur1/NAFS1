@@ -4,7 +4,7 @@ import { verifySession } from '@/lib/auth';
 import { getUserById, getRegistration } from '@/app/lib/db';
 
 export async function GET() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('nafs_session')?.value;
   if (!token) {
     return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
