@@ -110,7 +110,7 @@ export default function SchoolDashboardPage() {
     const schoolName = schoolData?.schoolName || 'your school';
     const file = new Blob(
       [
-        `CERTIFICATE\n\nThis is to certify that ${studentName} from ${schoolName} has registered for EduConf 2025.`,
+        `CERTIFICATE\n\nThis is to certify that ${studentName} from ${schoolName} has registered for NAFS (Nurturing Aspirations of the Soul).`,
       ],
       { type: 'text/plain' }
     );
