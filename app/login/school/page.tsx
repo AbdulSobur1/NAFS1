@@ -148,6 +148,11 @@ export default function SchoolLoginPage() {
                   Create School Account
                 </Button>
               </Link>
+              <Link href="/school-reset-password" className="block mt-3">
+                <Button variant="outline" className="w-full bg-transparent">
+                  Reset Password
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
