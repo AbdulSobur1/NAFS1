@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,18 @@ export default function ConfirmationPage() {
   const searchParams = useSearchParams();
   const registration = searchParams.get('registration');
   const category = searchParams.get('category');
+  const [tempPassword, setTempPassword] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!registration) return;
+    const load = async () => {
+      const response = await fetch(`/api/registration-lookup?id=${encodeURIComponent(registration)}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      setTempPassword(data.registration?.tempPassword || null);
+    };
+    load();
+  }, [registration]);
 
   const getCategoryLabel = (cat: string | null) => {
     switch (cat) {
@@ -108,6 +121,11 @@ export default function ConfirmationPage() {
                       <p className="text-sm text-muted-foreground">
                         Access your school dashboard to manage student registrations and view payment details.
                       </p>
+                      {tempPassword && (
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Temporary password: <span className="font-mono font-semibold">{tempPassword}</span>
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}

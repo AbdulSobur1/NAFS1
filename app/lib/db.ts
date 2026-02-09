@@ -112,6 +112,7 @@ export async function updateRegistration(id: string, updates: Partial<Registrati
   const status = updates.status ?? null;
   const verifiedAt = updates.verifiedAt ?? null;
   const failedAt = updates.failedAt ?? null;
+  const data = updates.data ?? null;
 
   const rows = await sql`
     UPDATE registrations
@@ -119,6 +120,7 @@ export async function updateRegistration(id: string, updates: Partial<Registrati
       status = COALESCE(${status}, status),
       verified_at = COALESCE(${verifiedAt}, verified_at),
       failed_at = COALESCE(${failedAt}, failed_at),
+      data = COALESCE(${data}, data),
       updated_at = NOW()
     WHERE id = ${id}
     RETURNING

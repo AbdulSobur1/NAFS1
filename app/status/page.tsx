@@ -11,62 +11,45 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, CheckCircle2, AlertCircle, Search } from 'lucide-react';
 
-// Mock registration data
-const mockRegistrations = [
-  {
-    id: 'REG-004',
-    name: 'Emily Chen',
-    email: 'emily@harvard.edu',
-    registrationId: 'REG-004',
-    referenceNumber: 'NAFS-2025-00004',
-    category: 'University',
-    paymentStatus: 'completed',
-    registrationDate: '2025-01-20',
-    conferenceDate: '2025-06-15 to 2025-06-17',
-  },
-  {
-    id: 'REG-005',
-    name: 'James Wilson',
-    email: 'james@stanford.edu',
-    registrationId: 'REG-005',
-    referenceNumber: 'NAFS-2025-00005',
-    category: 'University',
-    paymentStatus: 'completed',
-    registrationDate: '2025-01-21',
-    conferenceDate: '2025-06-15 to 2025-06-17',
-  },
-  {
-    id: 'REG-006',
-    name: 'Patricia Martin',
-    email: 'patricia@example.com',
-    registrationId: 'REG-006',
-    referenceNumber: 'NAFS-2025-00006',
-    category: 'General Public',
-    paymentStatus: 'completed',
-    registrationDate: '2025-01-22',
-    conferenceDate: '2025-06-15 to 2025-06-17',
-  },
-];
+type RegistrationResult = {
+  id: string;
+  reference: string;
+  category: string;
+  status: string;
+  createdAt: string;
+  name: string;
+  email: string;
+};
 
 export default function RegistrationStatusPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState<'email' | 'reference'>('email');
-  const [foundRegistration, setFoundRegistration] = useState<typeof mockRegistrations[0] | null>(null);
+  const [foundRegistration, setFoundRegistration] = useState<RegistrationResult | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     setHasSearched(true);
-    const result = mockRegistrations.find((reg) => {
-      if (searchType === 'email') {
-        return reg.email.toLowerCase() === searchQuery.toLowerCase();
-      } else {
-        return (
-          reg.referenceNumber.toUpperCase() === searchQuery.toUpperCase() ||
-          reg.registrationId.toUpperCase() === searchQuery.toUpperCase()
-        );
+    setIsSearching(true);
+    try {
+      const response = await fetch('/api/registration-lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+          searchType === 'email' ? { email: searchQuery } : { reference: searchQuery }
+        ),
+      });
+
+      if (!response.ok) {
+        setFoundRegistration(null);
+        return;
       }
-    });
-    setFoundRegistration(result || null);
+
+      const data = await response.json();
+      setFoundRegistration(data.registration || null);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -153,19 +136,18 @@ export default function RegistrationStatusPage() {
                   onKeyPress={handleKeyPress}
                   className="flex-1"
                 />
-                <Button onClick={handleSearch} className="gap-2">
+                <Button onClick={handleSearch} className="gap-2" disabled={isSearching || !searchQuery.trim()}>
                   <Search className="h-4 w-4" />
-                  Search
+                  {isSearching ? 'Searching...' : 'Search'}
                 </Button>
               </div>
             </div>
 
-            {/* Demo Info */}
+            {/* Info */}
             <Alert className="bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-900">
               <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <AlertDescription className="text-blue-900 dark:text-blue-100">
-                Try searching with: <code className="font-mono text-sm">emily@harvard.edu</code> or{' '}
-                <code className="font-mono text-sm">NAFS-2025-00004</code>
+                Use the email address you registered with or your Registration ID / reference.
               </AlertDescription>
             </Alert>
           </CardContent>
@@ -200,11 +182,11 @@ export default function RegistrationStatusPage() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Registration Category</p>
-                    <p className="font-medium">{foundRegistration.category}</p>
+                    <p className="font-medium capitalize">{foundRegistration.category}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Registration Date</p>
-                    <p className="font-medium">{foundRegistration.registrationDate}</p>
+                    <p className="font-medium">{new Date(foundRegistration.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
               </div>
@@ -216,14 +198,20 @@ export default function RegistrationStatusPage() {
                   <div>
                     <p className="text-sm text-muted-foreground">Payment Status</p>
                     <div className="mt-1">
-                      <Badge className="bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 capitalize">
-                        {foundRegistration.paymentStatus}
-                      </Badge>
+                      {foundRegistration.status === 'completed' ? (
+                        <Badge className="bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200 capitalize">
+                          {foundRegistration.status}
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200 capitalize">
+                          {foundRegistration.status}
+                        </Badge>
+                      )}
                     </div>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Reference Number</p>
-                    <p className="font-mono font-semibold text-lg mt-1">{foundRegistration.referenceNumber}</p>
+                    <p className="font-mono font-semibold text-lg mt-1">{foundRegistration.reference}</p>
                   </div>
                 </div>
               </div>
@@ -234,7 +222,7 @@ export default function RegistrationStatusPage() {
                 <div className="space-y-3">
                   <div>
                     <p className="text-sm text-muted-foreground">Conference Date</p>
-                    <p className="font-medium">{foundRegistration.conferenceDate}</p>
+                    <p className="font-medium">June 15–17, 2025</p>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Detailed conference schedule and logistical information will be sent to your email 30 days before the event.
@@ -244,11 +232,15 @@ export default function RegistrationStatusPage() {
 
               {/* Actions */}
               <div className="border-t border-border pt-6 flex gap-3 flex-col sm:flex-row">
-                <Button variant="outline" className="flex-1 bg-transparent" onClick={() => {
-                  setSearchQuery('');
-                  setFoundRegistration(null);
-                  setHasSearched(false);
-                }}>
+                <Button
+                  variant="outline"
+                  className="flex-1 bg-transparent"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setFoundRegistration(null);
+                    setHasSearched(false);
+                  }}
+                >
                   New Search
                 </Button>
                 <Button className="flex-1" disabled>
@@ -278,11 +270,15 @@ export default function RegistrationStatusPage() {
                 Please double-check your email address or reference number and try again.
               </p>
               <div className="flex gap-3 flex-col sm:flex-row">
-                <Button variant="outline" className="flex-1 bg-transparent" onClick={() => {
-                  setSearchQuery('');
-                  setFoundRegistration(null);
-                  setHasSearched(false);
-                }}>
+                <Button
+                  variant="outline"
+                  className="flex-1 bg-transparent"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setFoundRegistration(null);
+                    setHasSearched(false);
+                  }}
+                >
                   Try Again
                 </Button>
                 <Link href="/register" className="flex-1">
