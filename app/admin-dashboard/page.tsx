@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,87 +33,19 @@ import { Input } from '@/components/ui/input';
 import { LogOut, Download, Filter, Search, Users, Building2, Globe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-// Mock data for demo
-const mockRegistrations = {
-  school: [
-    {
-      id: 'REG-001',
-      schoolName: 'Lincoln High School',
-      contactName: 'John Smith',
-      contactEmail: 'john@lincoln.edu',
-      students: 25,
-      price: 3187.5,
-      paymentStatus: 'completed',
-      date: '2025-01-20',
-    },
-    {
-      id: 'REG-002',
-      schoolName: 'Jefferson Academy',
-      contactName: 'Sarah Johnson',
-      contactEmail: 'sarah@jefferson.edu',
-      students: 15,
-      price: 2250,
-      paymentStatus: 'completed',
-      date: '2025-01-21',
-    },
-    {
-      id: 'REG-003',
-      schoolName: 'Central High School',
-      contactName: 'Michael Davis',
-      contactEmail: 'michael@central.edu',
-      students: 52,
-      price: 5460,
-      paymentStatus: 'completed',
-      date: '2025-01-22',
-    },
-  ],
-  university: [
-    {
-      id: 'REG-004',
-      name: 'Emily Chen',
-      universityName: 'Harvard University',
-      email: 'emily@harvard.edu',
-      degreeLevel: 'Master\'s',
-      price: 6000,
-      paymentStatus: 'completed',
-      date: '2025-01-20',
-    },
-    {
-      id: 'REG-005',
-      name: 'James Wilson',
-      universityName: 'Stanford University',
-      email: 'james@stanford.edu',
-      degreeLevel: 'PhD',
-      price: 6000,
-      paymentStatus: 'completed',
-      date: '2025-01-21',
-    },
-  ],
-  general: [
-    {
-      id: 'REG-006',
-      name: 'Patricia Martin',
-      email: 'patricia@example.com',
-      profession: 'Principal',
-      price: 6000,
-      paymentStatus: 'completed',
-      date: '2025-01-22',
-    },
-  ],
+type RegistrationRow = {
+  id: string;
+  category: string;
+  amount: number;
+  status: string;
+  createdAt?: string;
+  data?: any;
 };
 
-const calculateStats = () => {
-  const schools = mockRegistrations.school.length;
-  const universities = mockRegistrations.university.length;
-  const general = mockRegistrations.general.length;
-  const totalStudents = mockRegistrations.school.reduce((sum, s) => sum + s.students, 0);
-  const totalRev = [
-    ...mockRegistrations.school.map((s) => s.price),
-    ...mockRegistrations.university.map((u) => u.price),
-    ...mockRegistrations.general.map((g) => g.price),
-  ].reduce((sum, p) => sum + p, 0);
-
-  return { schools, universities, general, totalStudents, totalRev };
+type AdminData = {
+  school: any[];
+  university: any[];
+  general: any[];
 };
 
 export default function AdminDashboardPage() {
@@ -122,7 +54,83 @@ export default function AdminDashboardPage() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('overview');
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const stats = calculateStats();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<AdminData>({ school: [], university: [], general: [] });
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await fetch('/api/admin/registrations');
+        if (!response.ok) {
+          setError('Please log in as admin to view this dashboard.');
+          setLoading(false);
+          return;
+        }
+        const result = await response.json();
+        const rows: RegistrationRow[] = result.registrations || [];
+
+        const school = rows
+          .filter((r) => r.category === 'school')
+          .map((r) => ({
+            id: r.id,
+            schoolName: r.data?.schoolName || 'School',
+            contactName: r.data?.contactName || '',
+            contactEmail: r.data?.contactEmail || r.data?.email || '',
+            students: r.data?.totalStudents || (Array.isArray(r.data?.studentNames) ? r.data.studentNames.length : 0),
+            price: r.amount || 0,
+            paymentStatus: r.status,
+            date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '',
+          }));
+
+        const university = rows
+          .filter((r) => r.category === 'university')
+          .map((r) => ({
+            id: r.id,
+            name: `${r.data?.firstName || ''} ${r.data?.lastName || ''}`.trim() || r.data?.name || '',
+            universityName: r.data?.universityName || '',
+            email: r.data?.email || '',
+            degreeLevel: r.data?.degreeLevel || '',
+            price: r.amount || 0,
+            paymentStatus: r.status,
+            date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '',
+          }));
+
+        const general = rows
+          .filter((r) => r.category === 'general')
+          .map((r) => ({
+            id: r.id,
+            name: `${r.data?.firstName || ''} ${r.data?.lastName || ''}`.trim() || r.data?.name || '',
+            email: r.data?.email || '',
+            profession: r.data?.profession || '',
+            price: r.amount || 0,
+            paymentStatus: r.status,
+            date: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '',
+          }));
+
+        setData({ school, university, general });
+      } catch (err) {
+        setError('Unable to load admin data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const stats = useMemo(() => {
+    const schools = data.school.length;
+    const universities = data.university.length;
+    const general = data.general.length;
+    const totalStudents = data.school.reduce((sum, s) => sum + (s.students || 0), 0);
+    const totalRev = [
+      ...data.school.map((s) => s.price || 0),
+      ...data.university.map((u) => u.price || 0),
+      ...data.general.map((g) => g.price || 0),
+    ].reduce((sum, p) => sum + p, 0);
+
+    return { schools, universities, general, totalStudents, totalRev };
+  }, [data]);
 
   const handleLogout = () => {
     router.push('/');
@@ -130,15 +138,15 @@ export default function AdminDashboardPage() {
 
   const handleExport = () => {
     const allData = [
-      ...mockRegistrations.school.map((s) => ({
+      ...data.school.map((s) => ({
         ...s,
         category: 'School',
       })),
-      ...mockRegistrations.university.map((u) => ({
+      ...data.university.map((u) => ({
         ...u,
         category: 'University',
       })),
-      ...mockRegistrations.general.map((g) => ({
+      ...data.general.map((g) => ({
         ...g,
         category: 'General',
       })),
@@ -208,6 +216,22 @@ export default function AdminDashboardPage() {
       </AlertDialog>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {loading && (
+          <Card className="mb-8">
+            <CardContent className="py-6">
+              <p className="text-muted-foreground">Loading admin dashboard...</p>
+            </CardContent>
+          </Card>
+        )}
+
+        {error && (
+          <Card className="mb-8">
+            <CardContent className="py-6">
+              <p className="text-amber-800 dark:text-amber-200">{error}</p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card>
@@ -254,7 +278,7 @@ export default function AdminDashboardPage() {
             </CardHeader>
           <CardContent>
               <div className="text-2xl font-bold">
-                ₦{stats.schools > 0 ? Math.round(mockRegistrations.school.reduce((sum, s) => sum + s.price, 0) / stats.schools).toLocaleString() : '0'}
+                ₦{stats.schools > 0 ? Math.round(data.school.reduce((sum, s) => sum + s.price, 0) / stats.schools).toLocaleString() : '0'}
               </div>
               <p className="text-xs text-muted-foreground">average transaction</p>
             </CardContent>
@@ -328,12 +352,12 @@ export default function AdminDashboardPage() {
                       </TableHeader>
                       <TableBody>
                         {[
-                          ...mockRegistrations.school.map((s) => ({ ...s, category: 'School' })),
-                          ...mockRegistrations.university.map((u) => ({
+                          ...data.school.map((s) => ({ ...s, category: 'School' })),
+                          ...data.university.map((u) => ({
                             ...u,
                             category: 'University',
                           })),
-                          ...mockRegistrations.general.map((g) => ({ ...g, category: 'General' })),
+                          ...data.general.map((g) => ({ ...g, category: 'General' })),
                         ]
                           .filter((row) => {
                             const rr: any = row;
@@ -398,7 +422,7 @@ export default function AdminDashboardPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {mockRegistrations.school.map((school) => (
+                      {data.school.map((school) => (
                         <TableRow key={school.id}>
                           <TableCell className="font-semibold">{school.schoolName}</TableCell>
                           <TableCell>
@@ -443,7 +467,7 @@ export default function AdminDashboardPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {mockRegistrations.university.map((student) => (
+                      {data.university.map((student) => (
                         <TableRow key={student.id}>
                           <TableCell className="font-semibold">{student.name}</TableCell>
                           <TableCell>{student.universityName}</TableCell>
@@ -482,7 +506,7 @@ export default function AdminDashboardPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {mockRegistrations.general.map((person) => (
+                      {data.general.map((person) => (
                         <TableRow key={person.id}>
                           <TableCell className="font-semibold">{person.name}</TableCell>
                           <TableCell className="text-sm">{person.email}</TableCell>
