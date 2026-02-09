@@ -52,6 +52,11 @@ export default function SchoolResetPasswordClient() {
         return;
       }
 
+      if (data?.session === 'not_set') {
+        router.push('/login/school');
+        return;
+      }
+
       router.push('/school-dashboard');
     } catch (err) {
       setError('Unable to reset password. Please try again.');

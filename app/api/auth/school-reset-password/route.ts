@@ -40,7 +40,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Unable to update password' }, { status: 500 });
     }
 
-    const response = NextResponse.json({ success: true });
+    if (!process.env.SESSION_SECRET) {
+      return NextResponse.json({
+        success: true,
+        session: 'not_set',
+        message: 'Password reset. Please log in to continue.',
+      });
+    }
+
+    const response = NextResponse.json({ success: true, session: 'ok' });
     const token = await signSession({ sub: user.id, role: 'school' });
     response.cookies.set('nafs_session', token, {
       httpOnly: true,
