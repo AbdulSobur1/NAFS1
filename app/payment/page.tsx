@@ -48,9 +48,13 @@ export default function PaymentPage() {
         if (data.success) {
           setStatus('success');
           setMessage('Payment successful! Your registration is complete.');
-          // Redirect to confirmation page after 3 seconds
+          // Redirect after 3 seconds
           setTimeout(() => {
-            router.push(`/confirmation?registration=${registration}&category=${category}`);
+            if (category === 'school') {
+              router.push(`/school-signup?registration=${registration}`);
+            } else {
+              router.push(`/confirmation?registration=${registration}&category=${category}`);
+            }
           }, 3000);
         } else {
           setStatus('error');

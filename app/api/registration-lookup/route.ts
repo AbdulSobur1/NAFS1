@@ -32,7 +32,6 @@ function formatRegistration(row: any) {
     createdAt: row.created_at,
     name,
     email,
-    tempPassword: data.tempPassword || null,
   };
 }
 
@@ -86,7 +85,7 @@ export async function POST(request: NextRequest) {
     FROM registrations
     WHERE upper(id) = upper(${reference})
        OR upper(reference) = upper(${reference})
-       OR upper(coalesce(data->>'paystackReference','')) = upper(${reference})
+       OR upper(coalesce(paystack_reference,'')) = upper(${reference})
     ORDER BY created_at DESC
     LIMIT 1;
   `;

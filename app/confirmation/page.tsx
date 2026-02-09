@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,20 +10,15 @@ import { CheckCircle2, Mail, Download, Home } from 'lucide-react';
 
 export default function ConfirmationPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const registration = searchParams.get('registration');
   const category = searchParams.get('category');
-  const [tempPassword, setTempPassword] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!registration) return;
-    const load = async () => {
-      const response = await fetch(`/api/registration-lookup?id=${encodeURIComponent(registration)}`);
-      if (!response.ok) return;
-      const data = await response.json();
-      setTempPassword(data.registration?.tempPassword || null);
-    };
-    load();
-  }, [registration]);
+    if (category === 'school' && registration) {
+      router.replace(`/school-signup?registration=${registration}`);
+    }
+  }, [category, registration, router]);
 
   const getCategoryLabel = (cat: string | null) => {
     switch (cat) {
@@ -58,9 +53,9 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <CardTitle className="text-3xl">Registration Complete!</CardTitle>
-            <CardDescription className="text-base mt-2">
+          <CardDescription className="text-base mt-2">
               Thank you for registering for EduConf 2025
-            </CardDescription>
+          </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-8 pt-8">
@@ -98,7 +93,7 @@ export default function ConfirmationPage() {
                   <div>
                     <p className="font-semibold text-sm">Check Your Email</p>
                     <p className="text-sm text-muted-foreground">
-                      A confirmation email has been sent to your registered email address with your registration details.
+                      Your ticket will be sent to your registered email address.
                     </p>
                   </div>
                 </div>
@@ -119,13 +114,8 @@ export default function ConfirmationPage() {
                     <div>
                       <p className="font-semibold text-sm">School Dashboard</p>
                       <p className="text-sm text-muted-foreground">
-                        Access your school dashboard to manage student registrations and view payment details.
+                        Use the school signup page to create your account and access your dashboard.
                       </p>
-                      {tempPassword && (
-                        <p className="text-sm text-muted-foreground mt-2">
-                          Temporary password: <span className="font-mono font-semibold">{tempPassword}</span>
-                        </p>
-                      )}
                     </div>
                   </div>
                 )}

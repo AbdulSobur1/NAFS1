@@ -122,24 +122,20 @@ export default function SchoolLoginPage() {
             <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-900 rounded-lg p-4 mb-6">
               <p className="text-xs font-semibold text-amber-900 dark:text-amber-100 mb-3">Create Your School Account</p>
               <p className="text-xs text-amber-800 dark:text-amber-200 mb-3">
-                School accounts are automatically created after successful payment. Use your registered email and the password confirmation sent to your inbox.
+                After successful payment, create your school account using your registration ID and contact email.
               </p>
               <div className="space-y-2 text-xs text-amber-800 dark:text-amber-200">
                 <p><span className="font-semibold">Step 1:</span> Register your school and complete payment</p>
-                <p><span className="font-semibold">Step 2:</span> Check your email for account confirmation</p>
+                <p><span className="font-semibold">Step 2:</span> Create your school account</p>
                 <p><span className="font-semibold">Step 3:</span> Sign in here with your credentials</p>
               </div>
-            </div>
-
-            {/* Demo Credentials */}
-            <div className="p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-900 rounded-lg">
-              <p className="text-xs font-semibold text-blue-900 dark:text-blue-100 mb-2">Demo Credentials:</p>
-              <p className="text-xs text-blue-800 dark:text-blue-200">
-                Email: <code className="font-mono">school@example.com</code>
-              </p>
-              <p className="text-xs text-blue-800 dark:text-blue-200">
-                Password: <code className="font-mono">school123</code>
-              </p>
+              <div className="mt-3">
+                <Link href="/school-signup">
+                  <Button variant="outline" className="w-full bg-transparent">
+                    Create School Account
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             {/* Help Section */}
@@ -147,9 +143,9 @@ export default function SchoolLoginPage() {
               <p className="text-xs text-muted-foreground mb-2">
                 Don't have a school account yet?
               </p>
-              <Link href="/register?category=school">
+              <Link href="/school-signup">
                 <Button variant="outline" className="w-full bg-transparent">
-                  Register Your School
+                  Create School Account
                 </Button>
               </Link>
             </div>

@@ -108,6 +108,30 @@ export async function getRegistration(id: string) {
   return rows[0] ?? null;
 }
 
+export async function getRegistrationByReference(reference: string) {
+  const rows = await sql`
+    SELECT
+      id,
+      category,
+      reference,
+      amount,
+      status,
+      paystack_reference as "paystackReference",
+      paystack_access_code as "paystackAccessCode",
+      data,
+      created_at as "createdAt",
+      updated_at as "updatedAt",
+      verified_at as "verifiedAt",
+      failed_at as "failedAt"
+    FROM registrations
+    WHERE reference = ${reference}
+       OR paystack_reference = ${reference}
+    LIMIT 1;
+  `;
+
+  return rows[0] ?? null;
+}
+
 export async function updateRegistration(id: string, updates: Partial<RegistrationRecord>) {
   const status = updates.status ?? null;
   const verifiedAt = updates.verifiedAt ?? null;
@@ -227,6 +251,25 @@ export async function getUserByEmail(email: string) {
       created_at as "createdAt"
     FROM users
     WHERE email = ${email}
+    LIMIT 1;
+  `;
+
+  return rows[0] ?? null;
+}
+
+export async function getUserById(id: string) {
+  const rows = await sql`
+    SELECT
+      id,
+      email,
+      password,
+      role,
+      school_name as "schoolName",
+      registration_id as "registrationId",
+      name,
+      created_at as "createdAt"
+    FROM users
+    WHERE id = ${id}
     LIMIT 1;
   `;
 

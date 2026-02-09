@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyPaystackPayment } from '@/lib/paystack';
-import { getRegistration, updateRegistration, saveUser } from '@/app/lib/db';
-import { hashPassword } from '@/lib/auth';
+import { getRegistrationByReference, updateRegistration } from '@/app/lib/db';
 
 /**
  * Paystack Callback Handler
@@ -23,19 +22,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Find registration by Paystack reference
-        const allRegistrations = await (async () => {
-            const fs = await import('fs/promises');
-            const path = await import('path');
-            const dbFile = path.default.join(process.cwd(), '.nafs-db', 'registrations.json');
-            try {
-                const data = await fs.readFile(dbFile, 'utf-8');
-                return JSON.parse(data);
-            } catch (error) {
-                return [];
-            }
-        })();
-
-        const registration = allRegistrations.find((r: any) => r.paystackReference === reference);
+        const registration = await getRegistrationByReference(reference);
 
         if (!registration) {
             return NextResponse.redirect(new URL('/status?status=error&message=Registration+not+found', request.url));
@@ -47,36 +34,13 @@ export async function GET(request: NextRequest) {
             verifiedAt: new Date().toISOString(),
         });
 
-        // If school registration, create user account for login
-        if (registration.category === 'school' && registration.data?.contactEmail) {
-            try {
-                const tempPassword = Math.random().toString(36).slice(2, 10);
-                const passwordHash = await hashPassword(tempPassword);
-                await saveUser({
-                    id: `school-${registration.id}`,
-                    email: registration.data.contactEmail,
-                    password: passwordHash,
-                    role: 'school',
-                    schoolName: registration.data.schoolName,
-                    registrationId: registration.id,
-                });
+        // Redirect based on category
+        const redirectPath =
+            registration.category === 'school'
+                ? `/school-signup?registration=${registration.id}`
+                : `/confirmation?registration=${registration.id}&category=${registration.category}&status=success`;
 
-                await updateRegistration(registration.id, {
-                    data: {
-                        ...registration.data,
-                        tempPassword,
-                    },
-                });
-            } catch (error) {
-                console.error('Error creating school user:', error);
-                // Don't fail the process if user creation fails
-            }
-        }
-
-        // Redirect to confirmation page
-        return NextResponse.redirect(
-            new URL(`/confirmation?registration=${registration.id}&category=${registration.category}&status=success`, request.url)
-        );
+        return NextResponse.redirect(new URL(redirectPath, request.url));
     } catch (error) {
         console.error('Error in Paystack callback:', error);
         return NextResponse.redirect(new URL('/status?status=error&message=An+error+occurred+processing+payment', request.url));
