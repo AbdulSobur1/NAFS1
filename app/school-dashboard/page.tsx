@@ -107,9 +107,10 @@ export default function SchoolDashboardPage() {
 
   const handleDownloadCertificate = (studentName: string) => {
     const element = document.createElement('a');
+    const schoolName = schoolData?.schoolName || 'your school';
     const file = new Blob(
       [
-        `CERTIFICATE\n\nThis is to certify that ${studentName} from ${mockSchoolData.schoolName} has registered for EduConf 2025.`,
+        `CERTIFICATE\n\nThis is to certify that ${studentName} from ${schoolName} has registered for EduConf 2025.`,
       ],
       { type: 'text/plain' }
     );
