@@ -61,7 +61,13 @@ export async function POST(request: NextRequest) {
             { status: 200 }
         );
 
-        // Set a simple session cookie (in production, use secure session management)
+        if (!process.env.SESSION_SECRET) {
+            return NextResponse.json(
+                { message: 'SESSION_SECRET is not configured' },
+                { status: 500 }
+            );
+        }
+
         const token = await signSession({ sub: user.id, role: 'school' });
         response.cookies.set('nafs_session', token, {
             httpOnly: true,
