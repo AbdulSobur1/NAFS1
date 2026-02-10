@@ -106,14 +106,20 @@ export default function AdminLoginPage() {
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-900 rounded-lg">
-              <p className="text-xs font-semibold text-blue-900 dark:text-blue-100 mb-2">Demo Credentials:</p>
-              <p className="text-xs text-blue-800 dark:text-blue-200">
-                Email: <code className="font-mono">admin@educonf.com</code>
+            <div className="mt-6 pt-6 border-t border-border">
+              <p className="text-xs text-muted-foreground mb-2">
+                Need to set up or reset an admin?
               </p>
-              <p className="text-xs text-blue-800 dark:text-blue-200">
-                Password: <code className="font-mono">admin123</code>
-              </p>
+              <Link href="/admin-setup">
+                <Button variant="outline" className="w-full bg-transparent">
+                  Admin Setup
+                </Button>
+              </Link>
+              <Link href="/admin-reset-password" className="block mt-3">
+                <Button variant="outline" className="w-full bg-transparent">
+                  Reset Admin Password
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
