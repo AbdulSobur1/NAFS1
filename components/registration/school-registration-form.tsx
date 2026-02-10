@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 const schoolRegistrationSchema = z.object({
   schoolName: z.string().min(2, 'School name is required'),
   contactName: z.string().min(2, 'Contact name is required'),
+  contactPosition: z.string().min(2, 'Position is required'),
   contactEmail: z.string().email('Valid email is required'),
   contactPhone: z.string().min(10, 'Valid phone number is required'),
   studentNames: z.array(
@@ -71,6 +72,7 @@ export default function SchoolRegistrationForm({ onBack }: SchoolRegistrationFor
           category: 'school',
           schoolName: data.schoolName,
           contactName: data.contactName,
+          contactPosition: data.contactPosition,
           contactEmail: data.contactEmail,
           email: data.contactEmail,
           contactPhone: data.contactPhone,
@@ -164,6 +166,30 @@ export default function SchoolRegistrationForm({ onBack }: SchoolRegistrationFor
                         />
                         {errors.contactName && (
                           <p className="text-sm text-red-500 mt-1">{errors.contactName.message}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="contactPosition">Position in School *</Label>
+                        <select
+                          id="contactPosition"
+                          {...register('contactPosition')}
+                          className={`w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ${
+                            errors.contactPosition ? 'border-red-500' : ''
+                          }`}
+                          defaultValue=""
+                        >
+                          <option value="" disabled>Select position</option>
+                          <option value="Principal">Principal</option>
+                          <option value="Vice Principal">Vice Principal</option>
+                          <option value="Head Teacher">Head Teacher</option>
+                          <option value="Coordinator">Coordinator</option>
+                          <option value="Administrator">Administrator</option>
+                          <option value="Teacher">Teacher</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        {errors.contactPosition && (
+                          <p className="text-sm text-red-500 mt-1">{errors.contactPosition.message}</p>
                         )}
                       </div>
 

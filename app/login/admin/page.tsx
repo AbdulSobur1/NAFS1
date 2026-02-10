@@ -108,13 +108,8 @@ export default function AdminLoginPage() {
 
             <div className="mt-6 pt-6 border-t border-border">
               <p className="text-xs text-muted-foreground mb-2">
-                Need to set up or reset an admin?
+                Need to reset the admin password?
               </p>
-              <Link href="/admin-setup">
-                <Button variant="outline" className="w-full bg-transparent">
-                  Admin Setup
-                </Button>
-              </Link>
               <Link href="/admin-reset-password" className="block mt-3">
                 <Button variant="outline" className="w-full bg-transparent">
                   Reset Admin Password
