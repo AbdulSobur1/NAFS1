@@ -237,8 +237,6 @@ export default function HomePage() {
               <thead>
                 <tr className="border-b border-border">
                   <th className="text-left py-4 px-4 font-semibold">Participant Category</th>
-                  <th className="text-right py-4 px-4 font-semibold">Programme Fee</th>
-                  <th className="text-right py-4 px-4 font-semibold">Books & Materials</th>
                   <th className="text-right py-4 px-4 font-semibold">Total per Student</th>
                   <th className="text-center py-4 px-4 font-semibold">Discount</th>
                 </tr>
@@ -247,8 +245,6 @@ export default function HomePage() {
                 {pricingTiers.map((tier, index) => (
                   <tr key={index} className={`border-b border-border hover:bg-muted/50 transition-colors ${index === pricingTiers.length - 1 ? '' : ''}`}>
                     <td className="py-4 px-4 font-medium">{tier.description}</td>
-                    <td className="text-right py-4 px-4">₦{tier.programme.toLocaleString()}</td>
-                    <td className="text-right py-4 px-4">₦{tier.book.toLocaleString()}</td>
                     <td className="text-right py-4 px-4 font-bold text-primary text-lg">₦{tier.total.toLocaleString()}</td>
                     <td className="text-center py-4 px-4">
                       {tier.discount > 0 ? (
