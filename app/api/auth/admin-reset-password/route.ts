@@ -20,13 +20,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Invalid setup key' }, { status: 403 });
     }
 
-    const existing = await getUserByEmail(email);
-    if (!existing || existing.role !== 'admin') {
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const existing = await getUserByEmail(normalizedEmail);
+    if (!existing) {
       return NextResponse.json({ message: 'Admin account not found' }, { status: 404 });
+    }
+    if (existing.role !== 'admin') {
+      return NextResponse.json(
+        { message: 'This email belongs to a non-admin account. Use the admin email.' },
+        { status: 400 }
+      );
     }
 
     const passwordHash = await hashPassword(password);
-    const user = await updateUserPassword(email, passwordHash);
+    const user = await updateUserPassword(normalizedEmail, passwordHash);
     if (!user) {
       return NextResponse.json({ message: 'Unable to update password' }, { status: 500 });
     }
