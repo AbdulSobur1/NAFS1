@@ -11,7 +11,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Setup key, email, and password are required' }, { status: 400 });
     }
 
-    if (!process.env.ADMIN_SETUP_KEY || setupKey !== process.env.ADMIN_SETUP_KEY) {
+    const configuredKey = process.env.ADMIN_SETUP_KEY;
+    if (!configuredKey) {
+      return NextResponse.json({ message: 'ADMIN_SETUP_KEY is not configured' }, { status: 500 });
+    }
+
+    const providedKey = String(setupKey).trim();
+    if (providedKey !== configuredKey.trim()) {
       return NextResponse.json({ message: 'Invalid setup key' }, { status: 403 });
     }
 
