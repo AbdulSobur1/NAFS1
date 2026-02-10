@@ -22,6 +22,9 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
+            <Link href="/admin-setup">
+              <Button variant="outline" size="sm">Admin Setup</Button>
+            </Link>
             <Link href="/login/admin">
               <Button variant="ghost" size="sm">Admin</Button>
             </Link>
