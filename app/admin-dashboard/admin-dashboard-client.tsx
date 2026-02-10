@@ -124,13 +124,37 @@ export default function AdminDashboardClient() {
     const general = data.general.length;
     const totalStudents = data.school.reduce((sum, s) => sum + (s.students || 0), 0);
     const totalRev = [
-      ...data.school.map((s) => s.price || 0),
-      ...data.university.map((u) => u.price || 0),
-      ...data.general.map((g) => g.price || 0),
+      ...data.school.filter((s) => s.paymentStatus === 'completed').map((s) => s.price || 0),
+      ...data.university.filter((u) => u.paymentStatus === 'completed').map((u) => u.price || 0),
+      ...data.general.filter((g) => g.paymentStatus === 'completed').map((g) => g.price || 0),
     ].reduce((sum, p) => sum + p, 0);
 
     return { schools, universities, general, totalStudents, totalRev };
   }, [data]);
+
+  const filtered = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    const matches = (value?: string) => value?.toLowerCase().includes(term);
+
+    const filterByTerm = (row: any) => {
+      if (!term) return true;
+      return (
+        matches(row.schoolName) ||
+        matches(row.contactEmail) ||
+        matches(row.contactName) ||
+        matches(row.name) ||
+        matches(row.email) ||
+        matches(row.universityName) ||
+        matches(row.id)
+      );
+    };
+
+    return {
+      school: data.school.filter(filterByTerm),
+      university: data.university.filter(filterByTerm),
+      general: data.general.filter(filterByTerm),
+    };
+  }, [data, searchTerm]);
 
   const handleLogout = () => {
     router.push('/');
@@ -266,7 +290,7 @@ export default function AdminDashboardClient() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">₦{stats.totalRev.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">all payments completed</p>
+              <p className="text-xs text-muted-foreground">completed payments only</p>
             </CardContent>
           </Card>
 
@@ -352,27 +376,19 @@ export default function AdminDashboardClient() {
                       </TableHeader>
                       <TableBody>
                         {[
-                          ...data.school.map((s) => ({ ...s, category: 'School' })),
-                          ...data.university.map((u) => ({
+                          ...filtered.school.map((s) => ({ ...s, category: 'School' })),
+                          ...filtered.university.map((u) => ({
                             ...u,
                             category: 'University',
                           })),
-                          ...data.general.map((g) => ({ ...g, category: 'General' })),
+                          ...filtered.general.map((g) => ({ ...g, category: 'General' })),
                         ]
                           .filter((row) => {
                             const rr: any = row;
-                            const term = searchTerm.toLowerCase();
-                            const matchesSearch =
-                              (rr.schoolName?.toLowerCase().includes(term)) ||
-                              (rr.name?.toLowerCase().includes(term)) ||
-                              (rr.email?.toLowerCase().includes(term)) ||
-                              (rr.contactEmail?.toLowerCase().includes(term));
-
-                            const matchesCategory =
+                            return (
                               filterCategory === 'all' ||
-                              rr.category.toLowerCase() === filterCategory.toLowerCase();
-
-                            return matchesSearch && matchesCategory;
+                              rr.category.toLowerCase() === filterCategory.toLowerCase()
+                            );
                           })
                           .map((row) => {
                             const rr: any = row;
@@ -422,7 +438,7 @@ export default function AdminDashboardClient() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {data.school.map((school) => (
+                      {filtered.school.map((school) => (
                         <TableRow key={school.id}>
                           <TableCell className="font-semibold">{school.schoolName}</TableCell>
                           <TableCell>
@@ -467,7 +483,7 @@ export default function AdminDashboardClient() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {data.university.map((student) => (
+                      {filtered.university.map((student) => (
                         <TableRow key={student.id}>
                           <TableCell className="font-semibold">{student.name}</TableCell>
                           <TableCell>{student.universityName}</TableCell>
@@ -506,7 +522,7 @@ export default function AdminDashboardClient() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {data.general.map((person) => (
+                      {filtered.general.map((person) => (
                         <TableRow key={person.id}>
                           <TableCell className="font-semibold">{person.name}</TableCell>
                           <TableCell className="text-sm">{person.email}</TableCell>
