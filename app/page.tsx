@@ -18,7 +18,7 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold text-primary">NAFS</div>
             <div className="text-xs font-medium text-muted-foreground hidden sm:block">
-              Nurturing Aspirations of the Soul
+              Nurtuting Awareness, Faith And Self control
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
@@ -323,14 +323,14 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <div className="font-bold text-lg mb-1">NAFS</div>
-                <p className="text-sm text-muted-foreground">Nurturing Aspirations of the Soul</p>
+                <p className="text-sm text-muted-foreground">Nurtuting Awareness, Faith And Self control</p>
               </div>
               <div className="text-sm text-muted-foreground">
                 Secure payment powered by <span className="font-semibold">Paystack</span>
               </div>
             </div>
             <div className="border-t border-border pt-4 text-sm text-muted-foreground">
-              © 2025 NAFS. Empowering education, one soul at a time.
+              © {new Date().getFullYear()} NAFS. Empowering education, one soul at a time.
             </div>
           </div>
         </div>
