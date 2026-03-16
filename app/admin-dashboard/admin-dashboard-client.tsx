@@ -519,7 +519,7 @@ export default function AdminDashboardClient() {
                         <TableHead>Email</TableHead>
                         <TableHead>Profession</TableHead>
                         <TableHead>Status</TableHead>
-                      </TableRow>
+                    </TableRow> 
                     </TableHeader>
                     <TableBody>
                       {filtered.general.map((person) => (

@@ -18,6 +18,9 @@ CREATE TABLE IF NOT EXISTS registrations (
 CREATE INDEX IF NOT EXISTS registrations_reference_idx
   ON registrations(reference);
 
+CREATE INDEX IF NOT EXISTS registrations_paystack_reference_idx
+  ON registrations(paystack_reference);
+
 CREATE INDEX IF NOT EXISTS registrations_category_idx
   ON registrations(category);
 

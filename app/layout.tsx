@@ -9,7 +9,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'NAFS - Nurtuting Awareness, Faith And Self control',
+  title: 'NAFS - Nurturing Awareness, Faith and Self-control',
   description: 'Register for NAFS, an inspiring educational conference. Secure online payment with Paystack and instant confirmation. Group discounts available.',
   generator: 'v0.app',
   icons: {
@@ -46,3 +46,4 @@ export default function RootLayout({
     </html>
   )
 }
+

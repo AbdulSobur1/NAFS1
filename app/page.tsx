@@ -18,7 +18,7 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold text-primary">NAFS</div>
             <div className="text-xs font-medium text-muted-foreground hidden sm:block">
-              Nurtuting Awareness, Faith And Self control
+              Nurturing Awareness, Faith and Self-control
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
@@ -42,13 +42,13 @@ export default function HomePage() {
             </Badge>
           </div>
           <h1 className="text-5xl sm:text-7xl font-bold text-balance mb-6 leading-tight">
-            Nurture Your <span className="text-primary">Aspirations</span>
+            Nurturing Awareness, <span className="text-primary">Faith</span> and Self-control
           </h1>
           <p className="text-xl text-muted-foreground text-balance mb-4 max-w-2xl mx-auto">
-            Join educators, innovators, and transformational leaders at Nigeria's most inspiring educational conference.
+            De-normalizing Zina & Reclaiming Youth Purity
           </p>
           <p className="text-lg text-accent mb-8 max-w-2xl mx-auto font-medium">
-            Empower minds. Elevate souls. Create lasting change.
+            NAFS PROJECT
           </p>
           <Link href="/register">
             <Button size="lg" className="gap-2 h-12 px-8 text-base">
@@ -58,11 +58,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* NAFS Project */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-border">
+        <div className="text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">NAFS PROJECT</h2>
+          <div className="text-lg text-muted-foreground space-y-4 max-w-4xl mx-auto">
+            <p>
+              The NAFS Project (Nurturing Awareness, Faith, and Self-control) is a youth-focused moral and psychological guidance initiative dedicated to helping young people understand and manage the challenges of desire, emotional attachment, and identity in a modern world filled with early exposure and silent struggles.
+            </p>
+            <p>
+              Through faith-based education, psychological guidance, and confidential support from trained therapists and qualified scholars, the project provides a safe and responsible space for youth, from secondary school students to university students and young adults, to ask questions, gain clarity, and develop healthy self-control.
+            </p>
+            <p>
+              At the heart of the initiative is the educational resource "Architecture of Desires," a youth-friendly book designed to help readers understand attraction, emotional development, and Islamic moral discipline in a thoughtful and accessible way.
+            </p>
+            <p>
+              The NAFS Project does not shame desire; it teaches mastery over it. By replacing silence with guidance and confusion with understanding, the project aims to raise a generation of youth with strong faith, emotional intelligence, and moral resilience.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Registration Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-border">
-        <h2 className="text-4xl font-bold text-center mb-4">Choose Your Path</h2>
+        <h2 className="text-4xl font-bold text-center mb-4">Choose Your Registration Path</h2>
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Whether you're bringing a school delegation or joining as an individual, NAFS welcomes you.
+          Whether you are registering a school group or joining individually, NAFS welcomes you.
         </p>
         
         <div className="grid md:grid-cols-3 gap-6">
@@ -123,7 +144,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Instant confirmation</span>
+                  <span className="text-sm">Safe Questions Space</span>
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
@@ -175,9 +196,9 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-border">
-        <h2 className="text-4xl font-bold text-center mb-4">Why Choose NAFS?</h2>
+        <h2 className="text-4xl font-bold text-center mb-4">Why the NAFS Project?</h2>
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          We've designed the registration process to be simple, transparent, and inspiring.
+          We have built a safe, guided path for youth to gain clarity, ask questions, and grow in self-control.
         </p>
         
         <div className="grid md:grid-cols-2 gap-8">
@@ -186,8 +207,8 @@ export default function HomePage() {
               <CheckCircle2 className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Smart Group Discounts</h3>
-              <p className="text-muted-foreground">Save up to 30% when bringing larger school delegations. Discounts apply automatically.</p>
+              <h3 className="font-semibold mb-2">Faith-Based Guidance</h3>
+              <p className="text-muted-foreground">Faith-informed teaching that helps youth make sense of desire, identity, and boundaries with clarity.</p>
             </div>
           </div>
           
@@ -196,8 +217,8 @@ export default function HomePage() {
               <CheckCircle2 className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Secure Payments</h3>
-              <p className="text-muted-foreground">Powered by Paystack for safe, reliable transactions. Your payment details are always protected.</p>
+              <h3 className="font-semibold mb-2">Psychological Support</h3>
+              <p className="text-muted-foreground">Confidential support from trained therapists to navigate emotions, attachment, and self-control.</p>
             </div>
           </div>
           
@@ -206,8 +227,8 @@ export default function HomePage() {
               <CheckCircle2 className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Instant Confirmation</h3>
-              <p className="text-muted-foreground">Receive immediate confirmation and access details right after payment. No delays or surprises.</p>
+              <h3 className="font-semibold mb-2">Safe Questions Space</h3>
+              <p className="text-muted-foreground">A respectful, non-judgmental space to ask hard questions and receive responsible answers.</p>
             </div>
           </div>
           
@@ -216,8 +237,8 @@ export default function HomePage() {
               <CheckCircle2 className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <h3 className="font-semibold mb-2">School Leadership Tools</h3>
-              <p className="text-muted-foreground">Dedicated dashboard for school administrators to manage student registrations and track attendance.</p>
+              <h3 className="font-semibold mb-2">Youth-Centered Resources</h3>
+              <p className="text-muted-foreground">Practical tools like the "Architecture of Desires" resource to guide understanding and discipline.</p>
             </div>
           </div>
         </div>
@@ -225,9 +246,9 @@ export default function HomePage() {
 
       {/* Pricing Info */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-border">
-        <h2 className="text-4xl font-bold text-center mb-4">Transparent Pricing</h2>
+        <h2 className="text-4xl font-bold text-center mb-4">Registration Pricing</h2>
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          All prices include both the Programme package and Study Materials (Books). All prices in Nigerian Naira (₦).
+          All prices include programme materials and study resources. All prices in Nigerian Naira (₦).
         </p>
         
         <div className="space-y-6 max-w-5xl mx-auto">
@@ -265,10 +286,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-4">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">For Schools</CardTitle>
+                <CardTitle className="text-base">For School Groups</CardTitle>
               </CardHeader>
               <CardContent className="text-sm space-y-2">
-                <p className="text-muted-foreground">Bulk pricing with automatic discounts</p>
+                <p className="text-muted-foreground">Group pricing with automatic discounts</p>
                 <p className="font-medium">Up to 30% savings for 100+ students</p>
               </CardContent>
             </Card>
@@ -277,17 +298,17 @@ export default function HomePage() {
                 <CardTitle className="text-base">For Individuals</CardTitle>
               </CardHeader>
               <CardContent className="text-sm space-y-2">
-                <p className="text-muted-foreground">University students & professionals</p>
+                <p className="text-muted-foreground">University students and young professionals</p>
                 <p className="font-medium">₦6,000 per person</p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">What's Included</CardTitle>
+                <CardTitle className="text-base">What You Receive</CardTitle>
               </CardHeader>
               <CardContent className="text-sm space-y-2">
-                <p className="text-muted-foreground">Full conference access</p>
-                <p className="font-medium">+ Study materials & resources</p>
+                <p className="text-muted-foreground">Full project access</p>
+                <p className="font-medium">Study materials and guidance resources</p>
               </CardContent>
             </Card>
           </div>
@@ -297,9 +318,9 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-border text-center">
         <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 rounded-2xl p-12">
-          <h2 className="text-4xl font-bold mb-4">Ready to Transform Your Journey?</h2>
+          <h2 className="text-4xl font-bold mb-4">Ready to Take the Next Step?</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of educators and leaders nurturing aspirations. Secure your spot with our secure, streamlined registration.
+            Join a growing movement restoring clarity, dignity, and self-control for the next generation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register">
@@ -316,25 +337,87 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Mission & Vision */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-border">
+        <h2 className="text-4xl font-bold text-center mb-10">Mission & Vision</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Mission</CardTitle>
+            </CardHeader>
+            <CardContent className="text-muted-foreground">
+              NAFS exists to de-normalize, confront zina and protect the next generations by restoring fear of Allah, clarity about the body, and dignity in desire - before curiosity becomes regret.
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Vision</CardTitle>
+            </CardHeader>
+            <CardContent className="text-muted-foreground">
+              We envision a generation that understands desire without being enslaved by it, fears Allah before trends, and reaches marriage with dignity instead of regret or wounds.
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+            {/* Footer */}
       <footer className="border-t border-border bg-muted mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <div className="font-bold text-lg mb-1">NAFS</div>
-                <p className="text-sm text-muted-foreground">Nurtuting Awareness, Faith And Self control</p>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Secure payment powered by <span className="font-semibold">Paystack</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="grid gap-8 md:grid-cols-3">
+            <div>
+              <div className="font-bold text-lg mb-1">NAFS</div>
+              <p className="text-sm text-muted-foreground">Nurturing Awareness, Faith and Self-control</p>
+              <p className="text-sm text-muted-foreground mt-3">De-normalizing Zina & Reclaiming Youth Purity</p>
+            </div>
+            <div>
+              <div className="font-semibold mb-2">Contact</div>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>
+                  Email: <a className="hover:text-primary" href="mailto:adebanjoayomideqawaam@gmail.com">adebanjoayomideqawaam@gmail.com</a>
+                </p>
+                <p>
+                  Phone: <a className="hover:text-primary" href="tel:+2348077907300">+234 807 790 7300</a>
+                </p>
+                <p>
+                  WhatsApp: <a className="hover:text-primary" href="https://wa.me/message/ZWPNJ7V6PETCB1" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
+                </p>
               </div>
             </div>
-            <div className="border-t border-border pt-4 text-sm text-muted-foreground">
-              © {new Date().getFullYear()} NAFS. Empowering education, one soul at a time.
+            <div>
+              <div className="font-semibold mb-2">Socials</div>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>
+                  <a className="hover:text-primary" href="https://www.facebook.com/profile.php?id=61587109243292" target="_blank" rel="noreferrer">Facebook</a>
+                </p>
+                <p>
+                  <a className="hover:text-primary" href="https://www.instagram.com/nafs_movement?igsh=dWszdzFpbG82MTQ5" target="_blank" rel="noreferrer">Instagram</a>
+                </p>
+                <p>
+                  <a className="hover:text-primary" href="https://x.com/nafsmovement?t=BJ7YFjRn335EleWHYGA2gw&s=09" target="_blank" rel="noreferrer">X / Twitter</a>
+                </p>
+                <p>
+                  <a className="hover:text-primary" href="https://www.linkedin.com/in/nafs-movement-30334a3aa" target="_blank" rel="noreferrer">LinkedIn</a>
+                </p>
+              </div>
             </div>
+          </div>
+
+          <div className="border-t border-border mt-8 pt-4 text-sm text-muted-foreground flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <span>© {new Date().getFullYear()} NAFS. Guiding hearts, restoring dignity.</span>
+            <span>Secure payment powered by <span className="font-semibold">Paystack</span></span>
+          </div>
+
+          <div className="text-center text-xs text-muted-foreground mt-3">
+            #GrowthMindset #Legacy #Discipline
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
+
+
+
+
+
