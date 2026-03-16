@@ -1,17 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
-
-const connectionString =
-  process.env.DATABASE_URL ||
-  process.env.POSTGRES_URL ||
-  process.env.DATABASE_URL_UNPOOLED ||
-  process.env.POSTGRES_URL_NON_POOLING;
-
-if (!connectionString) {
-  throw new Error('Database connection string not configured');
-}
-
-const sql = neon(connectionString);
+import { getSql } from '@/app/lib/db';
 
 function formatRegistration(row: any) {
   const data = row.data || {};
@@ -41,6 +29,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Missing id' }, { status: 400 });
   }
 
+  const sql = getSql();
+
   const rows = await sql`
     SELECT id, reference, category, status, data, created_at
     FROM registrations
@@ -64,6 +54,8 @@ export async function POST(request: NextRequest) {
   }
 
   if (email) {
+    const sql = getSql();
+
     const rows = await sql`
       SELECT id, reference, category, status, data, created_at
       FROM registrations
@@ -79,6 +71,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ registration: formatRegistration(rows[0]) });
   }
+
+  const sql = getSql();
 
   const rows = await sql`
     SELECT id, reference, category, status, data, created_at

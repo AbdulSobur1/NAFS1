@@ -13,7 +13,7 @@ const connectionString =
 
 const sql = connectionString ? neon(connectionString) : undefined;
 
-function getSql() {
+export function getSql() {
   if (!sql) {
     throw new Error(
       'Database connection string not configured. Set DATABASE_URL (or POSTGRES_URL).'

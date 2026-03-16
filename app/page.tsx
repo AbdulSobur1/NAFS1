@@ -82,7 +82,7 @@ export default function HomePage() {
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           Whether you are registering a school group or joining individually, NAFS welcomes you.
         </p>
-        
+
         <div className="grid md:grid-cols-3 gap-6">
           {/* Schools */}
           <Card className="relative overflow-hidden hover:shadow-lg transition-shadow">
@@ -197,7 +197,7 @@ export default function HomePage() {
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           We have built a safe, guided path for youth to gain clarity, ask questions, and grow in self-control.
         </p>
-        
+
         <div className="grid md:grid-cols-2 gap-8">
           <div className="flex gap-4">
             <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
@@ -208,7 +208,7 @@ export default function HomePage() {
               <p className="text-muted-foreground">Faith-informed teaching that helps youth make sense of desire, identity, and boundaries with clarity.</p>
             </div>
           </div>
-          
+
           <div className="flex gap-4">
             <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-6 w-6 text-accent" />
@@ -218,7 +218,7 @@ export default function HomePage() {
               <p className="text-muted-foreground">Confidential support from trained therapists to navigate emotions, attachment, and self-control.</p>
             </div>
           </div>
-          
+
           <div className="flex gap-4">
             <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-6 w-6 text-accent" />
@@ -228,7 +228,7 @@ export default function HomePage() {
               <p className="text-muted-foreground">A respectful, non-judgmental space to ask hard questions and receive responsible answers.</p>
             </div>
           </div>
-          
+
           <div className="flex gap-4">
             <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-6 w-6 text-accent" />
@@ -247,7 +247,7 @@ export default function HomePage() {
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           All prices include programme materials and study resources. All prices in Nigerian Naira (₦).
         </p>
-        
+
         <div className="space-y-6 max-w-5xl mx-auto">
           {/* Table Layout for Pricing */}
           <div className="overflow-x-auto">
