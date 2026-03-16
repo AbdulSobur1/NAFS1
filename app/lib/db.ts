@@ -11,13 +11,16 @@ const connectionString =
   process.env.DATABASE_URL_UNPOOLED ||
   process.env.POSTGRES_URL_NON_POOLING;
 
-if (!connectionString) {
-  throw new Error(
-    'Database connection string not configured. Set DATABASE_URL (or POSTGRES_URL).'
-  );
-}
+const sql = connectionString ? neon(connectionString) : undefined;
 
-const sql = neon(connectionString);
+function getSql() {
+  if (!sql) {
+    throw new Error(
+      'Database connection string not configured. Set DATABASE_URL (or POSTGRES_URL).'
+    );
+  }
+  return sql;
+}
 
 export interface RegistrationRecord {
   id: string;
@@ -47,7 +50,7 @@ export interface UserRecord {
 
 // Registration storage
 export async function saveRegistration(registration: RegistrationRecord) {
-  const rows = await sql`
+  const rows = await getSql()`
     INSERT INTO registrations (
       id,
       category,
@@ -86,7 +89,7 @@ export async function saveRegistration(registration: RegistrationRecord) {
 }
 
 export async function getRegistration(id: string) {
-  const rows = await sql`
+  const rows = await getSql()`
     SELECT
       id,
       category,
@@ -109,7 +112,7 @@ export async function getRegistration(id: string) {
 }
 
 export async function getRegistrationByReference(reference: string) {
-  const rows = await sql`
+  const rows = await getSql()`
     SELECT
       id,
       category,
@@ -138,7 +141,7 @@ export async function updateRegistration(id: string, updates: Partial<Registrati
   const failedAt = updates.failedAt ?? null;
   const data = updates.data ?? null;
 
-  const rows = await sql`
+  const rows = await getSql()`
     UPDATE registrations
     SET
       status = COALESCE(${status}, status),
@@ -166,7 +169,7 @@ export async function updateRegistration(id: string, updates: Partial<Registrati
 }
 
 export async function getAllRegistrations() {
-  return sql`
+  return getSql()`
     SELECT
       id,
       category,
@@ -187,7 +190,7 @@ export async function getAllRegistrations() {
 
 // User storage (for admin/school login)
 export async function saveUser(user: UserRecord) {
-  const rows = await sql`
+  const rows = await getSql()`
     INSERT INTO users (
       id,
       email,
@@ -220,7 +223,7 @@ export async function saveUser(user: UserRecord) {
 }
 
 export async function updateUserPassword(email: string, password: string) {
-  const rows = await sql`
+  const rows = await getSql()`
     UPDATE users
     SET password = ${password}
     WHERE email = ${email}
@@ -239,7 +242,7 @@ export async function updateUserPassword(email: string, password: string) {
 }
 
 export async function getUserByEmail(email: string) {
-  const rows = await sql`
+  const rows = await getSql()`
     SELECT
       id,
       email,
@@ -258,7 +261,7 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function getUserById(id: string) {
-  const rows = await sql`
+  const rows = await getSql()`
     SELECT
       id,
       email,
@@ -277,7 +280,7 @@ export async function getUserById(id: string) {
 }
 
 export async function getAllUsers() {
-  return sql`
+  return getSql()`
     SELECT
       id,
       email,

@@ -405,10 +405,10 @@ export default function HomePage() {
             <div>
               <div className="font-semibold mb-3">Social</div>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <a className="hover:text-primary" href="https://www.facebook.com/profile.php?id=61587109243292" target="_blank" rel="noreferrer">Facebook</a>
-                <a className="hover:text-primary" href="https://www.instagram.com/nafs_movement?igsh=dWszdzFpbG82MTQ5" target="_blank" rel="noreferrer">Instagram</a>
-                <a className="hover:text-primary" href="https://x.com/nafsmovement?t=BJ7YFjRn335EleWHYGA2gw&s=09" target="_blank" rel="noreferrer">X / Twitter</a>
-                <a className="hover:text-primary" href="https://www.linkedin.com/in/nafs-movement-30334a3aa" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a className="block hover:text-primary" href="https://www.facebook.com/profile.php?id=61587109243292" target="_blank" rel="noreferrer">Facebook</a>
+                <a className="block hover:text-primary" href="https://www.instagram.com/nafs_movement?igsh=dWszdzFpbG82MTQ5" target="_blank" rel="noreferrer">Instagram</a>
+                <a className="block hover:text-primary" href="https://x.com/nafsmovement?t=BJ7YFjRn335EleWHYGA2gw&s=09" target="_blank" rel="noreferrer">X / Twitter</a>
+                <a className="block hover:text-primary" href="https://www.linkedin.com/in/nafs-movement-30334a3aa" target="_blank" rel="noreferrer">LinkedIn</a>
               </div>
             </div>
           </div>
