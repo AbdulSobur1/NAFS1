@@ -22,9 +22,6 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <Link href="/login/admin">
-              <Button variant="ghost" size="sm">Admin</Button>
-            </Link>
             <Link href="/login/school">
               <Button variant="ghost" size="sm">School Login</Button>
             </Link>
@@ -339,70 +336,84 @@ export default function HomePage() {
 
       {/* Mission & Vision */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-border">
-        <h2 className="text-4xl font-bold text-center mb-10">Mission & Vision</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Mission</CardTitle>
+        <div className="text-center mb-14">
+          <h2 className="text-4xl font-bold">Mission & Vision</h2>
+          <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
+            A clear purpose guides everything we do — from the way we teach, to the resources we build, to the community we grow.
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          <Card className="shadow-lg border border-border/40 hover:shadow-xl transition-shadow">
+            <CardHeader className="flex items-center gap-3">
+              <Users className="h-5 w-5 text-primary" />
+              <CardTitle className="text-lg">Mission</CardTitle>
             </CardHeader>
             <CardContent className="text-muted-foreground">
-              NAFS exists to de-normalize, confront zina and protect the next generations by restoring fear of Allah, clarity about the body, and dignity in desire - before curiosity becomes regret.
+              <p>
+                NAFS exists to de-normalize, confront zina and protect the next generations by restoring fear of Allah, clarity about the body, and dignity in desire — before curiosity becomes regret.
+              </p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Vision</CardTitle>
+
+          <Card className="shadow-lg border border-border/40 hover:shadow-xl transition-shadow">
+            <CardHeader className="flex items-center gap-3">
+              <Globe className="h-5 w-5 text-primary" />
+              <CardTitle className="text-lg">Vision</CardTitle>
             </CardHeader>
             <CardContent className="text-muted-foreground">
-              We envision a generation that understands desire without being enslaved by it, fears Allah before trends, and reaches marriage with dignity instead of regret or wounds.
+              <p>
+                We see a generation that understands desire without being enslaved by it, fears Allah before trends, and reaches marriage with dignity instead of regret or wounds.
+              </p>
             </CardContent>
           </Card>
         </div>
       </section>
 
-            {/* Footer */}
-      <footer className="border-t border-border bg-muted mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid gap-8 md:grid-cols-3">
+      {/* Footer */}
+      <footer className="border-t border-border bg-background/70 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+          <div className="grid gap-10 md:grid-cols-4">
             <div>
-              <div className="font-bold text-lg mb-1">NAFS</div>
-              <p className="text-sm text-muted-foreground">Nurturing Awareness, Faith and Self-control</p>
-              <p className="text-sm text-muted-foreground mt-3">De-normalizing Zina & Reclaiming Youth Purity</p>
+              <div className="text-xl font-bold text-primary">NAFS</div>
+              <p className="text-sm text-muted-foreground mt-2">
+                Nurturing Awareness, Faith and Self-control
+              </p>
+              <p className="text-sm text-muted-foreground mt-3">
+                De-normalizing Zina & reclaiming youth purity.
+              </p>
             </div>
+
             <div>
-              <div className="font-semibold mb-2">Contact</div>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p>
-                  Email: <a className="hover:text-primary" href="mailto:adebanjoayomideqawaam@gmail.com">adebanjoayomideqawaam@gmail.com</a>
-                </p>
-                <p>
-                  Phone: <a className="hover:text-primary" href="tel:+2348077907300">+234 807 790 7300</a>
-                </p>
-                <p>
-                  WhatsApp: <a className="hover:text-primary" href="https://wa.me/message/ZWPNJ7V6PETCB1" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
-                </p>
+              <div className="font-semibold mb-3">Explore</div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <Link href="/register" className="block hover:text-primary">Register</Link>
+                <Link href="/login/school" className="block hover:text-primary">School Login</Link>
+                <Link href="/login/admin" className="block hover:text-primary">Admin Login</Link>
               </div>
             </div>
+
             <div>
-              <div className="font-semibold mb-2">Socials</div>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p>
-                  <a className="hover:text-primary" href="https://www.facebook.com/profile.php?id=61587109243292" target="_blank" rel="noreferrer">Facebook</a>
-                </p>
-                <p>
-                  <a className="hover:text-primary" href="https://www.instagram.com/nafs_movement?igsh=dWszdzFpbG82MTQ5" target="_blank" rel="noreferrer">Instagram</a>
-                </p>
-                <p>
-                  <a className="hover:text-primary" href="https://x.com/nafsmovement?t=BJ7YFjRn335EleWHYGA2gw&s=09" target="_blank" rel="noreferrer">X / Twitter</a>
-                </p>
-                <p>
-                  <a className="hover:text-primary" href="https://www.linkedin.com/in/nafs-movement-30334a3aa" target="_blank" rel="noreferrer">LinkedIn</a>
-                </p>
+              <div className="font-semibold mb-3">Contact</div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>Email: <a className="hover:text-primary" href="mailto:adebanjoayomideqawaam@gmail.com">adebanjoayomideqawaam@gmail.com</a></p>
+                <p>Phone: <a className="hover:text-primary" href="tel:+2348077907300">+234 807 790 7300</a></p>
+                <p>WhatsApp: <a className="hover:text-primary" href="https://wa.me/message/ZWPNJ7V6PETCB1" target="_blank" rel="noreferrer">Chat on WhatsApp</a></p>
+              </div>
+            </div>
+
+            <div>
+              <div className="font-semibold mb-3">Social</div>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <a className="hover:text-primary" href="https://www.facebook.com/profile.php?id=61587109243292" target="_blank" rel="noreferrer">Facebook</a>
+                <a className="hover:text-primary" href="https://www.instagram.com/nafs_movement?igsh=dWszdzFpbG82MTQ5" target="_blank" rel="noreferrer">Instagram</a>
+                <a className="hover:text-primary" href="https://x.com/nafsmovement?t=BJ7YFjRn335EleWHYGA2gw&s=09" target="_blank" rel="noreferrer">X / Twitter</a>
+                <a className="hover:text-primary" href="https://www.linkedin.com/in/nafs-movement-30334a3aa" target="_blank" rel="noreferrer">LinkedIn</a>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-border mt-8 pt-4 text-sm text-muted-foreground flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-10 border-t border-border pt-6 text-sm text-muted-foreground flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <span>© {new Date().getFullYear()} NAFS. Guiding hearts, restoring dignity.</span>
             <span>Secure payment powered by <span className="font-semibold">Paystack</span></span>
           </div>
